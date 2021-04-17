@@ -108,12 +108,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ZoomCollaborate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PlsLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ZoomCollaborate.xaml.cs">
+      <DependentUpon>ZoomCollaborate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PlsLogin.xaml.cs">
       <DependentUpon>PlsLogin.xaml</DependentUpon>
     </Compile>

@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BlackboardsBane"
         mc:Ignorable="d"
+        SizeToContent="WidthAndHeight"
         Title="Log into Blackboard" Height="100" Width="300" Loaded="Window_Loaded">
+        <!-- SizeToContent "fixes" weird sizing issue on launch -->
+    
     <Border Padding="5">
         <Grid>
             <TextBlock Name="signingIn" Visibility="Visible">

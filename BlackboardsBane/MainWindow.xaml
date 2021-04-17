@@ -5,34 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BlackboardsBane"
         mc:Ignorable="d"
-        Title="Blackboard's Bane" Height="450" Width="800" Loaded="Window_Loaded">
-    <Grid>
-        <Label Content="Blackboard's BANE" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="772"/>
-        <Grid Margin="10,40,10,10">
+        Title="Blackboard's Bane" Height="400" Width="800" Loaded="Window_Loaded">
+    <Border Padding="2">
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="390*"/>
+                <ColumnDefinition Width="401*"/>
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Content="Classes" />
-            <ItemsControl Grid.Row="1" Grid.Column="0" Background="LightGray" Name="classList" ItemsSource="{Binding ClassList}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Content="{Binding ClassName}" Foreground="{Binding ClassTextColor}" Background="{Binding ClassColor}" FontWeight="Bold" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <Label Grid.Row="0" Grid.Column="1" Content="Assignments due soon" />
-            <ItemsControl Grid.Row="1" Grid.Column="1"  Background="LightGray" x:Name="assignmentList" ItemsSource="{Binding AssignmentList}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Content="{Binding AssignmentName}" Foreground="{Binding AssignmentTextColor}" Background="{Binding AssignmentColor}" FontWeight="Bold" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <Grid Margin="10,40,10,10.5" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ItemsControl Grid.Column="0" Background="LightGray" Name="classList" ItemsSource="{Binding ClassList}" Margin="0,0,9.5,0.5" Grid.RowSpan="2">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding ClassName}" Foreground="{Binding ClassTextColor}" Background="{Binding ClassColor}" FontWeight="Bold" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl Grid.Column="1"  Background="LightGray" x:Name="assignmentList" ItemsSource="{Binding AssignmentList}" Margin="0.5,0,0,0.5" Grid.RowSpan="2">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding AssignmentName}" Foreground="{Binding AssignmentTextColor}" Background="{Binding AssignmentColor}" FontWeight="Bold" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Label Grid.Row="0" Grid.Column="0" Content="Classes" VerticalContentAlignment="Bottom" FontWeight="Bold" Grid.ColumnSpan="2" Margin="0,-30,385,30"/>
+                <Label Grid.Row="0" Grid.Column="1" Content="Assignments due soon" VerticalContentAlignment="Bottom" FontWeight="Bold" Margin="0.5,-30,0,30"/>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>
