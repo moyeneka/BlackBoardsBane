@@ -17,7 +17,7 @@ namespace CalendarQuickstart
     {
         // If modifying these scopes, delete your previously saved credentials
         // at ~/.credentials/calendar-dotnet-quickstart.json
-        static string[] Scopes = { CalendarService.Scope.Calendar};
+        static string[] Scopes = { CalendarService.Scope.Calendar };
         static string ApplicationName = "Google Calendar API .NET Quickstart";
 
         static void Main(string[] args)
@@ -46,35 +46,54 @@ namespace CalendarQuickstart
                 ApplicationName = ApplicationName,
             });
 
-            // Define parameters of request.
-            EventsResource.ListRequest request = service.Events.List("primary");
-            request.TimeMin = DateTime.Now;
-            request.ShowDeleted = false;
-            request.SingleEvents = true;
-            request.MaxResults = 10;
-            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
-
-            // List events.
-            Events events = request.Execute();
-            Console.WriteLine("Upcoming events:");
-            if (events.Items != null && events.Items.Count > 0)
+            Event ev = new Event
             {
-                foreach (var eventItem in events.Items)
-                {
-                    string when = eventItem.Start.DateTime.ToString();
-                    if (String.IsNullOrEmpty(when))
-                    {
-                        when = eventItem.Start.Date;
-                    }
-                    Console.WriteLine("{0} ({1})", eventItem.Summary, when);
-                }
-            }
-            else
-            {
-                Console.WriteLine("No upcoming events found.");
-            }
-            Console.Read();
+                Summary = "SOME SUMMARY",
+                Description = "eyyy we have things working"
+            };
 
+            EventDateTime start = new EventDateTime();
+            start.DateTime = DateTime.Now;
+            start.TimeZone = "America/Chicago";
+            ev.Start = start;
+
+            EventDateTime end = new EventDateTime();
+            end.DateTime = DateTime.Now.AddHours(1);
+            end.TimeZone = "America/Chicago";
+            ev.End = end;
+
+            EventsResource.InsertRequest irequest = service.Events.Insert(ev, "primary");
+            irequest.Execute();
+            
+
+            //// Define parameters of request.
+            //EventsResource.ListRequest request = service.Events.List("primary");
+            //request.TimeMin = DateTime.Now;
+            //request.ShowDeleted = false;
+            //request.SingleEvents = true;
+            //request.MaxResults = 10;
+            //request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+            //// List events.
+            //Events events = request.Execute();
+            //Console.WriteLine("Upcoming events:");
+            //if (events.Items != null && events.Items.Count > 0)
+            //{
+            //    foreach (var eventItem in events.Items)
+            //    {
+            //        string when = eventItem.Start.DateTime.ToString();
+            //        if (String.IsNullOrEmpty(when))
+            //        {
+            //            when = eventItem.Start.Date;
+            //        }
+            //        Console.WriteLine("{0} ({1})", eventItem.Summary, when);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("No upcoming events found.");
+            //}
+            //Console.Read();
         }
     }
 }
