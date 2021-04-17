@@ -69,12 +69,13 @@ namespace BlackboardsBane
             return newCal.Id;
         }
 
-        public void AddItemToCalendar(string title, string desc, DateTime startdt, DateTime enddt, string calId = "primary")
+        public void AddItemToCalendar(string title, string desc, int colorId, DateTime startdt, DateTime enddt, string calId = "primary")
         {
             Event ev = new Event
             {
                 Summary = title,
-                Description = desc
+                Description = desc,
+                ColorId = colorId.ToString()
             };
 
             EventDateTime start = new EventDateTime

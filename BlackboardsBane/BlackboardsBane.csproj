@@ -108,8 +108,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AssignmentDetails.cs" />
     <Compile Include="FirstTime\AddToCalendar.xaml.cs">
       <DependentUpon>AddToCalendar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FirstTime\FinishAll.xaml.cs">
+      <DependentUpon>FinishAll.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserData.cs" />
     <Compile Include="FolderSelect.xaml.cs">
@@ -124,6 +128,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FirstTime\AddToCalendar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FirstTime\FinishAll.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

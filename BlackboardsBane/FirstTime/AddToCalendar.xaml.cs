@@ -42,14 +42,29 @@ namespace BlackboardsBane.FirstTime
             }
             string cid = gc.AddOrFindCalendar("BBB Calendar", "Blackboard assignments and links here");
 
-            ///////TESTTTT ONLY ONE ASSIGNMENT SHOWS UP HERE
-            var testAssign = ud.assignmentDetails[0];
-            gc.AddItemToCalendar(testAssign.AssignmentName, "Link: " + testAssign.AssignmentUrl, testAssign.AssignmentDate.AddHours(-1), testAssign.AssignmentDate, cid);
+            foreach (var a in ud.assignmentDetails)
+            {
+                DateTime start;
+                DateTime end;
+                DateTime assignmentDate = a.AssignmentDate;
+                if (assignmentDate == DateTime.MinValue)
+                {
+                    start = DateTime.Today;
+                    end = DateTime.Today.AddHours(1);
+                }
+                else
+                {
+                    start = a.AssignmentDate.AddHours(-1);
+                    end = a.AssignmentDate;
+                }
+                gc.AddItemToCalendar(a.AssignmentName, "Link: " + a.AssignmentUrl, a.AssignmentClass.ClassCalColor, start, end, cid);
+            }
+            setup.FinishAll();
         }
 
         private void skipBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            setup.FinishAll();
         }
     }
 }

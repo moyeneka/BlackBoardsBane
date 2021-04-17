@@ -21,11 +21,13 @@ namespace BlackboardsBane.FirstTime
     {
         private DragonFlyCEF df;
         private UserData ud;
+        private MainWindow mw;
 
-        public Setup(DragonFlyCEF df)
+        public Setup(DragonFlyCEF df, MainWindow mw)
         {
             this.df = df;
             this.ud = new UserData();
+            this.mw = mw;
 
             InitializeComponent();
             Content = new AddClasses(df, ud, this);
@@ -43,7 +45,14 @@ namespace BlackboardsBane.FirstTime
 
         public void FinishAll()
         {
-            //Content = new Finished();
+            Content = new FinishAll(this);
+        }
+
+        public void CloseWin()
+        {
+            mw.ud = ud;
+            mw.PopulateClassDetailList();
+            Close();
         }
     }
 }

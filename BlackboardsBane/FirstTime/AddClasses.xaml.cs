@@ -29,6 +29,7 @@ namespace BlackboardsBane.FirstTime
         public ObservableCollection<ClassDetails> ClassList;
         public bool loadedYet = false;
 
+
         public AddClasses(DragonFlyCEF df, UserData ud, Setup setup)
         {
             this.df = df;
@@ -48,12 +49,63 @@ namespace BlackboardsBane.FirstTime
 
             int classCount = await fapi.GetClassCount();
 
+            List<string> validColors = new List<string>()
+            {
+                "DUMMY",
+                "#039be5",
+                "#7986cb",
+                "#33b679",
+                "#8e24aa",
+                "#e67c73",
+                "#f6c026",
+                "#f5511d",
+                "#039be5",
+                "#616161",
+                "#3f51b5",
+                "#0b8043",
+                "#d60000",
+            };
+
+            List<string> remainingColors = new List<string>()
+            {
+                "#039be5",
+                "#7986cb",
+                "#33b679",
+                "#8e24aa",
+                "#e67c73",
+                "#f6c026",
+                "#f5511d",
+                "#039be5",
+                "#616161",
+                "#3f51b5",
+                "#0b8043",
+                "#d60000",
+            };
+
+            Random r = new Random();
             for (int i = 0; i < classCount; i++)
             {
                 string className = await fapi.GetClassNameAtIndex(i);
                 string classUrl = await fapi.GetClassURLAtIndex(i);
-                ClassDetails dets = new ClassDetails(className, Brushes.White, classUrl);
+
+                string randomColorStr;
+                if (remainingColors.Count == 0)
+                {
+                    randomColorStr = "#039be5";
+                }
+                else
+                {
+                    int randomColorIdx = r.Next(0, remainingColors.Count - 1);
+                    randomColorStr = remainingColors[randomColorIdx];
+                    remainingColors.RemoveAt(randomColorIdx);
+                }
+
+                Brush randomColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(randomColorStr));
+
+                ClassDetails dets = new ClassDetails(className, randomColor, classUrl);
                 dets.Enabled = true;
+                dets.ClassCalColor = validColors.IndexOf(randomColorStr);
+
                 ud.classDetails.Add(dets);
             }
             Application.Current.Dispatcher.Invoke(delegate
