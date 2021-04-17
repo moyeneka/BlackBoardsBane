@@ -24,17 +24,16 @@ namespace BlackboardsBane
         }
         public async Task<string> GetClassNameAtIndex(int i)
         {
-            string className = (string)await df.ExecuteJs($"return document.getElementsByClassName(\"coursefakeclass\")[0].children[{i}].children[1].innerHTML");
+            string className = (string)await df.ExecuteJs($"return document.getElementsByClassName(\"coursefakeclass\")[0].children[{i}].children[1].innerText");
             return className;
         }
         public async Task<string> GetClassURLAtIndex(int i)
         {
-            throw new NotImplementedException("no u");
-            string className = (string)await df.ExecuteJs($"return document.getElementsByClassName(\"coursefakeclass\")[0].children[{i}].children[1].innerHTML");
-            return className;
+            string classUrl = (string)await df.ExecuteJs($"return document.getElementsByClassName(\"coursefakeclass\")[0].children[{i}].children[1].href");
+            return classUrl;
         }
 
-        //on class content page of such (i.e. https://learn.uark.edu/webapps/blackboard/content/listContent.jsp?course_id=_285727_1&content_id=_8552355_1&mode=reset)
+        //on class content page of such (i.e. https://learn.uark.edu/webapps/blackboard/content/listContent.jsp?course_id=_XXXXXX_1&content_id=_XXXXXX_1&mode=reset)
         public async Task<int> GetClassPageEntryCount()
         {
             int pageCount = (int)await df.ExecuteJs($"return document.getElementsByClassName(\"contentList\")[0].childElementCount");
@@ -56,19 +55,19 @@ namespace BlackboardsBane
             return entryUrl;
         }
 
-        //on class homepage (i.e. https://learn.uark.edu/webapps/blackboard/execute/modulepage/view?course_id=_285727_1&cmp_tab_id=_496115_1&mode=view)
+        //on class homepage (i.e. https://learn.uark.edu/webapps/blackboard/execute/modulepage/view?course_id=_XXXXXX_1&cmp_tab_id=_XXXXXX_1&mode=view)
         public async Task<int> GetDueAssignmentCount(FakeApi_DueDatePeriod t)
         {
             bool anyAssignmentsAvailable =
-                (bool)await df.ExecuteJs($"return document.getElementById(\"dueView\").children[0].children[0].children[{t}].children[0].children[1].tagName != \"P\"");
+                (bool)await df.ExecuteJs($"return document.getElementById(\"dueView\").children[0].children[0].children[{(int)t}].children[0].children[1].tagName != \"P\"");
             if (!anyAssignmentsAvailable)
                 return 0;
-            int assignmentCount = (int)await df.ExecuteJs($"return document.getElementById(\"dueView\").children[0].children[0].children[{t}].children[0].children[1].childElementCount");
+            int assignmentCount = (int)await df.ExecuteJs($"return document.getElementById(\"dueView\").children[0].children[0].children[{(int)t}].children[0].children[1].childElementCount");
             return assignmentCount;
         }
         public async Task<string> GetDueAssignmentTitle(FakeApi_DueDatePeriod t, int i)
         {
-            string assignmentTitle = (string)await df.ExecuteJs($"return document.getElementById(\"dueView\").children[0].children[0].children[{t}].children[0].children[1].children[{i}].children[0].innerText");
+            string assignmentTitle = (string)await df.ExecuteJs($"return document.getElementById(\"dueView\").children[0].children[0].children[{(int)t}].children[0].children[1].children[{i}].children[0].innerText");
             return assignmentTitle;
         }
     }

@@ -16,5 +16,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <Label Content="Assignments due soon" HorizontalAlignment="Left" Margin="315,41,0,0" VerticalAlignment="Top" Width="467"/>
     </Grid>
 </Window>

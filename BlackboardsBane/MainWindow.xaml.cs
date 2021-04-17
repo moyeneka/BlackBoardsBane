@@ -67,6 +67,8 @@ namespace BlackboardsBane
         public DragonFlyCEF df;
         public FakeApi fapi;
         public ObservableCollection<ClassDetails> ClassList;
+        public bool loadedYet = false;
+
         public MainWindow(DragonFlyCEF df)
         {
             this.df = df;
@@ -74,13 +76,39 @@ namespace BlackboardsBane
             ClassList = new ObservableCollection<ClassDetails>();
             InitializeComponent();
             classList.ItemsSource = ClassList;
+
+            df.DOMLoaded += DomLoaded;
+            df.browser.Load("https://learn.uark.edu/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_1_1");
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void DomLoaded(object sender)
         {
-            ClassList.Add(new ClassDetails("Class 1", Brushes.Red));
-            ClassList.Add(new ClassDetails("Class 2", Brushes.Lime));
-            ClassList.Add(new ClassDetails("Class 3", Brushes.LightBlue));
+            if (!loadedYet)
+            {
+                loadedYet = true;
+                PopulateClassDetailList();
+            }
+        }
+
+        private async void PopulateClassDetailList()
+        {
+            List<ClassDetails> classListTemp = new List<ClassDetails>();
+            await Task.Delay(1000); //wait for dumb blackboard
+            int classCount = await fapi.GetClassCount();
+            for (int i = 0; i < classCount; i++)
+            {
+                string className = await fapi.GetClassNameAtIndex(i);
+                classListTemp.Add(new ClassDetails(className, Brushes.Red));
+            }
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                foreach (var i in classListTemp)
+                    ClassList.Add(i);
+            });
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

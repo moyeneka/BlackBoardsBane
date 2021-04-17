@@ -33,7 +33,7 @@ namespace BlackboardsBane
             df = new DragonFlyCEF();
             df.BrowserLoaded += (object s) =>
             {
-                df.Connect("https://learn.uark.edu/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_1_1");
+                df.Connect("https://learn.uark.edu/auth-saml/saml/login?apId=_156_1&redirectUrl=https%3A%2F%2Flearn.uark.edu%2Fwebapps%2Fportal%2Fexecute%2FdefaultTab");
             };
             df.DOMLoaded += DomLoaded;
         }
