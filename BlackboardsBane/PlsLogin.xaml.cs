@@ -49,7 +49,7 @@ namespace BlackboardsBane
 
         private async void CheckForLogin()
         {
-            var loggedIn = !await df.ElementExists("loginPageContainer");
+            var loggedIn = false;
             if (!loggedIn)
             {
                 Application.Current.Dispatcher.Invoke(delegate
