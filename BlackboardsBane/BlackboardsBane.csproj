@@ -76,6 +76,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="FirstTime\AddClasses.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FirstTime\Setup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -87,8 +95,15 @@
     <Compile Include="BrowserLogin.xaml.cs">
       <DependentUpon>BrowserLogin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ClassDetails.cs" />
     <Compile Include="Dragonfly.cs" />
     <Compile Include="FakeApi.cs" />
+    <Compile Include="FirstTime\AddClasses.xaml.cs">
+      <DependentUpon>AddClasses.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FirstTime\Setup.xaml.cs">
+      <DependentUpon>Setup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
