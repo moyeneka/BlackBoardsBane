@@ -30,7 +30,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Grid.Row="2" Content="Continue" />
+            <Button Grid.Row="2" Content="Continue" Click="Button_Click" />
         </Grid>
     </Grid>
 </Page>

@@ -4,16 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Xml.Serialization;
 
 namespace BlackboardsBane
 {
+    [Serializable]
     public class ClassDetails
     {
+        [XmlAttribute("ClassName")]
         public string ClassName { get; set; }
+        [XmlAttribute("ClassColor")]
         public Brush ClassColor { get; set; }
+        [XmlAttribute("ClassTextColor")]
         public Brush ClassTextColor { get; set; }
+        [XmlAttribute("ClassUrl")]
         public string ClassUrl { get; set; }
+        [XmlAttribute("ClassEnabled")]
         public bool Enabled { get; set; }
+
+        public ClassDetails() { }
 
         public ClassDetails(string className, Brush classColor, string classUrl)
         {

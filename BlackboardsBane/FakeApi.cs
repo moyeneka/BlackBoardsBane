@@ -67,8 +67,73 @@ namespace BlackboardsBane
         }
         public async Task<string> GetDueAssignmentTitle(FakeApi_DueDatePeriod t, int i)
         {
-            string assignmentTitle = (string)await df.ExecuteJs($"return document.getElementById(\"dueView\").children[0].children[0].children[{(int)t}].children[0].children[1].children[{i}].children[0].innerText");
+            string assignmentTitle = (string)await df.ExecuteJs($"return document.getElementById(\"dueView\").children[0].children[0].children[{(int)t}].children[0].children[1].children[{i}].children[0].children[0].innerText");
             return assignmentTitle;
+        }
+        //public async Task VisitAssignmentPage(FakeApi_DueDatePeriod t, int i)
+        //{
+        //    await df.ExecuteJs($"document.getElementById(\"dueView\").children[0].children[0].children[{(int)t}].children[0].children[1].children[{i}].children[0].children[0].onclick()");
+        //}
+        public async Task<string> GetDueAssignmentJS(FakeApi_DueDatePeriod t, int i)
+        {
+            return (string)await df.ExecuteJs($"return document.getElementById(\"dueView\").children[0].children[0].children[{(int)t}].children[0].children[1].children[{i}].children[0].children[0].getAttribute(\"onclick\")");
+        }
+
+        //normally these links redirect us and won't give us a url
+        //so this lets us get the url without going back and forth over and over
+        public async Task<string> GetAssignmentPage(string notId, string actionKey)
+        {
+            string script = @"
+async function handleNotification(notification, actionKey) {
+    return new Promise(r => 
+        NautilusViewService.handleNotificationAction(notification.sourceType, notification.recipientType, notification.notificationIds[0], actionKey, function(item) {
+            r(item);
+        })
+    );
+}
+            
+async function testGetUrl() {
+    var notificationId = " + notId + @";
+    var actionKey = " + actionKey + @";
+    var defaultAction = true;
+            
+    var actionInfo = defaultAction ? notification_controller.getDefaultAction(notificationId) : notification_controller.getNotificationActionInfo(notificationId, actionKey);
+    var notification = notification_controller.getNotification(notificationId);
+            
+    var item = await handleNotification(notification, actionKey);
+    if (actionInfo.actionKind == notification_controller.ACTION_NAVIGATE) {
+        if (item.indexOf(""&isLaunchInNewWindow=true"") < 0) {
+            var url = notification_controller.getCourseLink(notification.courseId) + encodeURIComponent(item);
+            return url;
+        } else {
+            return item;
+        }
+    }
+}
+            
+return (async function() {
+    return await testGetUrl();
+})();";
+            return (string)await df.ExecuteJsPromise(script);
+        }
+
+        public async Task<string> GetAssignmentDueDate()
+        {
+            string script = @"
+var wrap = document.getElementsByClassName(""metaWrapper"")[0];
+if (wrap == null)
+    return null;
+var childrenCount = wrap.childElementCount;
+for (var i = 0; i < childrenCount; i++)
+{
+    if (wrap.children[i].innerText.includes(""Due Date""))
+    {
+        return wrap.children[i].children[1].innerText;
+    }
+}
+return null;
+";
+            return (string)await df.ExecuteJs(script);
         }
     }
     public enum FakeApi_DueDatePeriod

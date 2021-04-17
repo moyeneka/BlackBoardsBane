@@ -20,13 +20,30 @@ namespace BlackboardsBane.FirstTime
     public partial class Setup : Window
     {
         private DragonFlyCEF df;
+        private UserData ud;
 
         public Setup(DragonFlyCEF df)
         {
             this.df = df;
+            this.ud = new UserData();
 
             InitializeComponent();
-            Content = new AddClasses(df);
+            Content = new AddClasses(df, ud, this);
+        }
+
+        public void FinishAddClasses()
+        {
+            Content = new ScanAndAddToCalendar(df, ud, this);
+        }
+
+        public void FinishScanClasses()
+        {
+            Content = new AddToCalendar(df, ud, this);
+        }
+
+        public void FinishAll()
+        {
+            //Content = new Finished();
         }
     }
 }

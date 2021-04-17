@@ -23,13 +23,17 @@ namespace BlackboardsBane.FirstTime
     public partial class AddClasses : Page
     {
         public DragonFlyCEF df;
+        public UserData ud;
+        public Setup setup;
         public FakeApi fapi;
         public ObservableCollection<ClassDetails> ClassList;
         public bool loadedYet = false;
 
-        public AddClasses(DragonFlyCEF df)
+        public AddClasses(DragonFlyCEF df, UserData ud, Setup setup)
         {
             this.df = df;
+            this.ud = ud;
+            this.setup = setup;
             this.fapi = new FakeApi(df);
             ClassList = new ObservableCollection<ClassDetails>();
             InitializeComponent();
@@ -40,8 +44,6 @@ namespace BlackboardsBane.FirstTime
 
         private async void PopulateClassDetailList()
         {
-            List<ClassDetails> classListTemp = new List<ClassDetails>();
-            List<AssignmentDetails> assignmentListTemp = new List<AssignmentDetails>();
             await Task.Delay(1000); //wait for dumb blackboard
 
             int classCount = await fapi.GetClassCount();
@@ -52,13 +54,18 @@ namespace BlackboardsBane.FirstTime
                 string classUrl = await fapi.GetClassURLAtIndex(i);
                 ClassDetails dets = new ClassDetails(className, Brushes.White, classUrl);
                 dets.Enabled = true;
-                classListTemp.Add(dets);
+                ud.classDetails.Add(dets);
             }
             Application.Current.Dispatcher.Invoke(delegate
             {
-                foreach (var i in classListTemp)
+                foreach (var i in ud.classDetails)
                     ClassList.Add(i);
             });
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            setup.FinishAddClasses();
         }
     }
 }

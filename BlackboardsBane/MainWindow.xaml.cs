@@ -45,12 +45,17 @@ namespace BlackboardsBane
         public Brush AssignmentColor { get; set; }
         public Brush AssignmentTextColor { get; set; }
         public string AssignmentUrl { get; set; }
+        public ClassDetails AssignmentClass { get; set; }
+        public DateTime AssignmentDate { get; set; } = DateTime.MinValue;
 
-        public AssignmentDetails(string assignmentName, Brush assignmentColor, string assignmentUrl)
+        public AssignmentDetails() {}
+
+        public AssignmentDetails(string assignmentName, Brush assignmentColor, string assignmentUrl, ClassDetails classDetails)
         {
             AssignmentName = assignmentName;
             AssignmentColor = assignmentColor;
             AssignmentUrl = assignmentUrl;
+            AssignmentClass = classDetails;
             Color brushColor = (Color)assignmentColor.GetValue(SolidColorBrush.ColorProperty);
             int r = brushColor.R;
             int g = brushColor.G;
@@ -64,6 +69,14 @@ namespace BlackboardsBane
             {
                 AssignmentTextColor = Brushes.Black;
             }
+        }
+
+        public override string ToString()
+        {
+            if (AssignmentDate == DateTime.MinValue)
+                return AssignmentName;
+            else
+                return AssignmentName + " due " + AssignmentDate;
         }
     }
 
@@ -91,6 +104,7 @@ namespace BlackboardsBane
 
         private void DomLoaded(object sender)
         {
+            df.DOMLoaded -= DomLoaded;
             if (!loadedYet)
             {
                 loadedYet = true;
@@ -156,7 +170,7 @@ namespace BlackboardsBane
                 //{
                 //    MessageBox.Show("loading stuff for class " + det.ClassName + " at " + det.ClassUrl);
                 //});
-                assignmentListTemp.Add(new AssignmentDetails(det.ClassName, Brushes.Red, ""));
+                assignmentListTemp.Add(new AssignmentDetails(det.ClassName, Brushes.Red, "", null));
 
                 for (int k = 0; k < 4; k++)
                 {
@@ -166,7 +180,7 @@ namespace BlackboardsBane
                     {
                         string dueAssignmentName = await fapi.GetDueAssignmentTitle(ddp, i);
                         string dueAssignmentUrl = "lol idk";
-                        assignmentListTemp.Add(new AssignmentDetails(dueAssignmentName, Brushes.White, dueAssignmentUrl));
+                        assignmentListTemp.Add(new AssignmentDetails(dueAssignmentName, Brushes.White, dueAssignmentUrl, null));
                     }
                 }
 

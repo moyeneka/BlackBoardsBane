@@ -21,14 +21,18 @@ namespace BlackboardsBane
 
         public DragonFlyCEF()
         {
-            var settings = new CefSettings()
+            if (!Cef.IsInitialized)
             {
-                CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DragonFly\\Cache")
-            };
-            Cef.Initialize(settings, performDependencyCheck: true, browserProcessHandler: null);
-            browser = new ChromiumWebBrowser();
-            browser.BrowserInitialized += BrowserInitialized;
-            browser.LoadingStateChanged += LoadingStateChanged;
+                var settings = new CefSettings()
+                {
+                    CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DragonFly\\Cache")
+                };
+                CefSharpSettings.ConcurrentTaskExecution = true;
+                Cef.Initialize(settings, performDependencyCheck: true, browserProcessHandler: null);
+                browser = new ChromiumWebBrowser();
+                browser.BrowserInitialized += BrowserInitialized;
+                browser.LoadingStateChanged += LoadingStateChanged;
+            }
         }
 
         public void Connect(string url)
@@ -66,6 +70,38 @@ namespace BlackboardsBane
         {
             var frame = browser.GetMainFrame();
             var task = await frame.EvaluateScriptAsync($"(function() {{ {action} }})();", null);
+
+            var response = task.Result;
+            if (task.Success)
+            {
+                return response ?? null;
+            }
+            else
+            {
+                throw new Exception(task.Message);
+            }
+        }
+
+        public async Task<object> ExecuteJsExpert(string action)
+        {
+            var frame = browser.GetMainFrame();
+            var task = await frame.EvaluateScriptAsync(action, null);
+
+            var response = task.Result;
+            if (task.Success)
+            {
+                return response ?? null;
+            }
+            else
+            {
+                throw new Exception(task.Message);
+            }
+        }
+
+        public async Task<object> ExecuteJsPromise(string action)
+        {
+            var frame = browser.GetMainFrame();
+            var task = await frame.EvaluateScriptAsPromiseAsync(action, null);
 
             var response = task.Result;
             if (task.Success)
